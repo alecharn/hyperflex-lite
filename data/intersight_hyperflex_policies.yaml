@@ -1,0 +1,276 @@
+---
+intersight:
+  
+  # HyperFlex Policies of HyperFlex clusters.
+  hyperflex_policies:
+
+    # Optional - Policies specifying the configuration to automatically generate support tickets with Cisco TAC.
+    autosupport_policies:
+    - name: autosupport_policy_not_enabled
+      admin_state: false
+      description: autosupport policy not enabled
+      service_ticket_recipient: test@email.com
+      attached_to_cluster_profiles:
+        - cluster_profile: hx-edge-cluster1
+        - cluster_profile: hx-datacenter-no-fi-cluster2
+        - cluster_profile: hx-datacenter-cluster3
+
+
+    # Policies specifying VLANs for management, VM migration (not applicable to Edge / DC-no-FI cluster), VM traffic (not applicable to Edge / DC-no-FI cluster), and KVM IPs (not applicable to Edge / DC-no-FI cluster).
+    cluster_network_policies:
+    - name: cluster_network_policy_hx-edge-cluster1
+      description: cluster_network_policy for hx-edge-cluster1
+      jumbo_frame: false
+      mac_prefix: 00:25:B5:01
+      management_vlan:
+        vlan_id: 1101
+      uplink_speed: 10G
+      attached_to_cluster_profiles:
+        - cluster_profile: hx-edge-cluster1
+
+    - name: cluster_network_policy_hx-datacenter-no-fi-cluster2
+      description: cluster_network_policy for hx-datacenter-no-fi-cluster2
+      jumbo_frame: false
+      mac_prefix: 00:25:B5:02
+      management_vlan:
+        vlan_id: 1201
+      uplink_speed: 10G
+      attached_to_cluster_profiles:
+        - cluster_profile: hx-datacenter-no-fi-cluster2
+
+    - name:  cluster_network_policy_hx-datacenter-cluster3
+      description: cluster_network_policy for hx-datacenter-cluster3
+      jumbo_frame: false
+      kvm_ip_range:
+        gateway: 10.0.3.254
+        netmask: 255.255.255.0
+        blocks:
+          - block_ip_start: 10.0.3.101
+            block_ip_end: 10.0.3.109
+          - block_ip_start: 10.0.3.111
+            block_ip_end: 10.0.3.119
+      mac_prefix: 00:25:B5:03
+      management_vlan:
+        name: hx_mgmt_vlan
+        vlan_id: 1301
+      migration_vlan:
+        name: hx_migration_vlan
+        vlan_id: 1303      
+      network_vlans:
+        - name: network_vlan_1304
+          vlan_id: 1304
+        - name: network_vlan_1305
+          vlan_id: 1305
+        - name: network_vlan_1306
+          vlan_id: 1306
+      uplink_speed: default
+      attached_to_cluster_profiles:
+        - cluster_profile: hx-datacenter-cluster3
+
+
+    # Optional - Policies specifying HyperFlex cluster storage settings
+    cluster_storage_policies:
+    - name: storage_policy_hx-edge-cluster1
+      description: storage_policy for hx-edge-cluster1
+      disk_partition_cleanup: true
+      vdi_optimization: false
+      attached_to_cluster_profiles:
+        - cluster_profile: hx-edge-cluster1
+
+    - name: storage_policy_hx-datacenter-no-fi-cluster2
+      description: storage_policy for hx-datacenter-no-fi-cluster2
+      disk_partition_cleanup: true
+      logical_availability_zone_config: false
+      vdi_optimization: false
+      attached_to_cluster_profiles:
+        - cluster_profile: hx-datacenter-no-fi-cluster2
+
+    - name: storage_policy_hx-datacenter-cluster3
+      description: storage_policy for hx-datacenter-cluster3
+      disk_partition_cleanup: true
+      logical_availability_zone_config: true
+      vdi_optimization: true
+      attached_to_cluster_profiles:
+        - cluster_profile: hx-datacenter-cluster3
+
+
+    # Optional - Policies specifying external storage connectivity information via Fabric attached FC storage
+    # *** not applicable to Edge / DC-no-FI cluster ***
+    external_fc_storage_policies:
+      - name: external_fc_storage_policy_enabled_hx-datacenter-cluster3
+        admin_state: true
+        description: external_fc_storage_policy for hx-datacenter-cluster3
+        exta_traffic:
+          name: exta_fc_traffic1
+          vsan_id: 701
+        extb_traffic:
+          name: extb_fc_traffic1
+          vsan_id: 702
+        wwxn_prefix_range:
+          start_address: 20:00:00:25:B5:31
+          end_address: 20:00:00:25:B5:49
+        attached_to_cluster_profiles:
+          - cluster_profile: hx-datacenter-cluster3
+
+
+    # Optional - Policies specifying external storage connectivity information via Fabric attached FCoE storage.
+    # *** not applicable to Edge / DC-no-FI cluster ***
+    external_iscsi_storage_policies:
+      - name: ext_iscsi_storage_policy_enabled_hx-datacenter-cluster3
+        admin_state: true
+        description: ext_iscsi_storage_policy for hx-datacenter-cluster3
+        exta_traffic:
+          name: exta_iscsi_traffic1
+          vlan_id: 801
+        extb_traffic:
+          name: extb_iscsi_traffic1
+          vlan_id: 802
+        attached_to_cluster_profiles:
+          - cluster_profile: hx-datacenter-cluster3
+
+
+    # Policies specifying node details such as management and storage data IP ranges. 
+    # The data IPs are automatically assigned in a /24 subnet in the range 169.254.x.2 to 169.254.239.254.
+    node_config_policies:
+    - name: node_config_hx-edge-cluster1
+      description: node_config for hx-edge-cluster1
+      hxdp_mgmt_ip_range:
+        gateway: 10.0.1.254
+        netmask: 255.255.255.0
+        blocks:
+          - block_ip_start: 10.0.1.1
+            block_ip_end: 10.0.1.3
+          - block_ip_start: 10.0.1.7
+            block_ip_end: 10.0.1.9
+      hypervisor_mgmt_ip_range:
+        gateway: 10.0.1.254
+        netmask: 255.255.255.0
+        blocks:
+          - block_ip_start: 10.0.1.11
+            block_ip_end: 10.0.1.14
+          - block_ip_start: 10.0.1.17
+            block_ip_end: 10.0.1.19
+      node_name_prefix: hx220-edge-cluster1
+      attached_to_cluster_profiles:
+        - cluster_profile: hx-edge-cluster1
+
+    - name: node_config_policy_hx-datacenter-no-fi-cluster2
+      description: node_config_policy for hx-datacenter-no-fi-cluster2
+      hxdp_mgmt_ip_range:
+        gateway: 10.0.2.254
+        netmask: 255.255.255.0
+        blocks:
+          - block_ip_start: 10.0.2.1
+            block_ip_end: 10.0.2.5
+      hypervisor_mgmt_ip_range:
+        gateway: 10.0.2.254
+        netmask: 255.255.255.0
+        blocks:
+          - block_ip_start: 10.0.2.11
+            block_ip_end: 10.0.2.15
+      node_name_prefix: hx-datacenter-no-fi-cluster2
+      attached_to_cluster_profiles:
+        - cluster_profile: hx-datacenter-no-fi-cluster2
+
+    - name: node_config_policy_hx-datacenter-cluster3
+      description: node_config_policy for hx-datacenter-cluster3
+      hxdp_mgmt_ip_range:
+        gateway: 10.0.3.254
+        netmask: 255.255.255.0
+        blocks:
+          - block_ip_start: 10.0.3.1
+            block_ip_end: 10.0.3.9
+          - block_ip_start: 10.0.3.21
+            block_ip_end: 10.0.3.29
+      hypervisor_mgmt_ip_range:
+        gateway: 10.0.3.254
+        netmask: 255.255.255.0
+        blocks:
+          - block_ip_start: 10.0.3.11
+            block_ip_end: 10.0.3.19
+          - block_ip_start: 10.0.3.31
+            block_ip_end: 10.0.3.39
+      node_name_prefix: hx220-datacenter-cluster3
+      attached_to_cluster_profiles:
+        - cluster_profile: hx-datacenter-cluster3
+
+
+    # Optional - Policies specifying the HTTP proxy settings to be used by the HyperFlex installation process and HyperFlex storage controller VMs. 
+    proxy_setting_policies:
+    - name: proxy_setting_policy_enabled
+      description: proxy_setting_policy specifying the proxy to use
+      hostname: 10.1.0.10
+      port: 80
+      username:
+      password:
+      attached_to_cluster_profiles:
+        - cluster_profile: hx-edge-cluster1
+        - cluster_profile: hx-datacenter-no-fi-cluster2
+        - cluster_profile: hx-datacenter-cluster3
+
+
+    # Policies specifying credentials for HyperFlex cluster such as controller VM password, hypervisor username, and password.
+    security_policies:
+      - name: security_policy_default
+        description: security_policy using factory default hypervisor password
+        hxdp_root_pwd: MySecurePassword123@
+        hypervisor_admin: root
+        hypervisor_admin_pwd: MySecurePassword123@
+        factory_hypervisor_password: true
+        attached_to_cluster_profiles:
+          - cluster_profile: hx-edge-cluster1
+          - cluster_profile: hx-datacenter-no-fi-cluster2
+          - cluster_profile: hx-datacenter-cluster3
+
+
+    # A policy capturing software versions for different HyperFlex Cluster compatible components that the user wishes to apply on the HyperFlex cluster.
+    software_version_policies:
+      - name: software_version_policy_hx-edge-cluster1
+        description: software_version_policy for hx-edge-cluster1
+        hxdp_version: 5.0(2a)
+        attached_to_cluster_profiles:
+          - cluster_profile: hx-edge-cluster1
+        
+      - name: software_version_policy_hx-datacenter-no-fi-cluster2
+        description: software_version_policy for hx-datacenter-no-fi-cluster2
+        hxdp_version: 5.0(2a)
+        attached_to_cluster_profiles:
+          - cluster_profile: hx-datacenter-no-fi-cluster2
+
+      - name: software_version_policy_hx-datacenter-cluster3
+        description: software_version_policy for hx-datacenter-cluster3
+        hxdp_version: 5.0(2a)
+        server_firmware_version: 4.2(1i)
+        attached_to_cluster_profiles:
+          - cluster_profile: hx-datacenter-cluster3
+
+
+    # A policy specifying system configuration such as timezone, DNS servers, and NTP Servers.
+    sys_config_policies:
+    - name: sys_config_policy_dns_ntp_paris
+      description: sys_config_policy using specified DNS, specified NTP and Europe/Paris timezone
+      dns_domain_name: domainname.com
+      dns_servers:
+        - 10.1.0.20
+        - 10.1.0.30
+      ntp_servers:
+        - 10.1.0.40
+      timezone: "Europe/Paris"
+      attached_to_cluster_profiles:
+        - cluster_profile: hx-edge-cluster1
+        - cluster_profile: hx-datacenter-no-fi-cluster2
+        - cluster_profile: hx-datacenter-cluster3
+
+
+    # Optional - A policy specifying vCenter configuration.
+    vcenter_config_policies:
+    - name: vcenter_config_policy_hx_vcenter
+      description: vcenter_config_policy using hx_vcenter
+      hostname: 10.1.0.50
+      username: admin@vsphere.local
+      password: MySecurePassword123@
+      data_center: hx-datacenter
+      attached_to_cluster_profiles:
+        - cluster_profile: hx-edge-cluster1
+        - cluster_profile: hx-datacenter-no-fi-cluster2
+        - cluster_profile: hx-datacenter-cluster3

@@ -1,0 +1,113 @@
+---
+intersight:
+  
+  # HyperFlex Profiles of HyperFlex clusters.
+  hyperflex_profiles:
+
+    # Profiles specifying configuration settings for an HyperFlex Edge cluster.
+    edge_cluster_profiles:
+      - name: hx-edge-cluster1
+        description: hx-edge cluter profile
+        host_name_prefix: hx220-edge-cluster1
+        mac_address_prefix: 00:25:B5:01
+        mgmt_ip_address: 10.0.1.10
+        mgmt_platform: EDGE
+        replication: 2
+        storage_data_vlan:
+          vlan_id: 1102
+
+    # Profiles specifying configuration settings for a DC-no-FI HyperFlex cluster.
+    datacenter_no_fi_cluster_profiles:
+      - name: hx-datacenter-no-fi-cluster2
+        description: hx-datacenter-no-fi cluster profile
+        host_name_prefix: hx-datacenter-no-fi-cluster2
+        mac_address_prefix: 00:25:B5:02
+        mgmt_ip_address: 10.0.2.10
+        mgmt_platform: DC-No-FI
+        replication: 2
+        storage_data_vlan:
+          vlan_id: 1202
+
+    # Profiles specifying configuration settings for a Datacenter HyperFlex cluster.
+    datacenter_cluster_profiles:
+      - name: hx-datacenter-cluster3
+        description: hx-datacenter cluster profile
+        host_name_prefix: hx220-datacenter-cluster3
+        mac_address_prefix: 00:25:B5:03
+        mgmt_ip_address: 10.0.3.10
+        mgmt_platform: FI
+        replication: 3
+        storage_data_vlan:
+          name: hx_storage_vlan
+          vlan_id: 1302
+        wwxn_prefix: 20:00:00:25:B5:31
+
+
+    # A configuration profile per node in the HyperFlex cluster. 
+    # It defines node settings such as IP address configuration for hypervisor management network, storage data network, HyperFlex management network, and the assigned physical server.
+    node_profiles:
+      # Cluster hx-edge-cluster1
+      - server_name: hx220-cimc-node-1
+        server_hypervisor_hostname: esx-hx-edge-cluster1-1
+        server_hxdp_mgmt_ip: 10.0.1.1
+        server_hypervisor_mgmt_ip: 10.0.1.11
+        node_role: Storage
+        attached_to_hx_cluster: hx-edge-cluster1
+
+      - server_name: hx220-cimc-node-2
+        server_hypervisor_hostname: esx-hx-edge-cluster1-2
+        server_hxdp_mgmt_ip: 10.0.1.2
+        server_hypervisor_mgmt_ip: 10.0.1.12
+        node_role: Storage
+        attached_to_hx_cluster: hx-edge-cluster1
+
+      # Cluster hx-datacenter-no-fi-cluster2
+      - server_name: hx220-cimc-node-3
+        server_hypervisor_hostname: esx-hx-datacenter-no-fi-cluster2-1
+        server_hxdp_mgmt_ip: 10.0.2.1
+        server_hypervisor_mgmt_ip: 10.0.2.11
+        node_role: Storage
+        attached_to_hx_cluster: hx-datacenter-no-fi-cluster2
+
+      - server_name: hx220-cimc-node-4
+        server_hypervisor_hostname: esx-hx-datacenter-no-fi-cluster2-2
+        server_hxdp_mgmt_ip: 10.0.2.2
+        server_hypervisor_mgmt_ip: 10.0.2.12
+        node_role: Storage
+        attached_to_hx_cluster: hx-datacenter-no-fi-cluster2
+
+      - server_name: hx220-cimc-node-5
+        server_hypervisor_hostname: esx-hx-datacenter-no-fi-cluster2-3
+        server_hxdp_mgmt_ip: 10.0.2.3
+        server_hypervisor_mgmt_ip: 10.0.2.13
+        node_role: Storage
+        attached_to_hx_cluster: hx-datacenter-no-fi-cluster2
+
+      - server_name: hx220-cimc-node-6
+        server_hypervisor_hostname: esx-hx-datacenter-no-fi-cluster2-4
+        server_hxdp_mgmt_ip: 10.0.2.4
+        server_hypervisor_mgmt_ip: 10.0.2.14
+        node_role: Storage
+        attached_to_hx_cluster: hx-datacenter-no-fi-cluster2
+
+      # Cluster hx-datacenter-cluster3
+      - server_name: hx220-cimc-node-7
+        server_hypervisor_hostname: esx-hx-datacenter-cluster3-1
+        server_hxdp_mgmt_ip: 10.0.3.1
+        server_hypervisor_mgmt_ip: 10.0.3.11
+        node_role: Storage
+        attached_to_hx_cluster: hx-datacenter-cluster3
+
+      - server_name: hx220-cimc-node-8
+        server_hypervisor_hostname: esx-hx-datacenter-cluster3-2
+        server_hxdp_mgmt_ip: 10.0.3.2
+        server_hypervisor_mgmt_ip: 10.0.3.12
+        node_role: Storage
+        attached_to_hx_cluster: hx-datacenter-cluster3
+
+      - server_name: hx220-cimc-node-9
+        server_hypervisor_hostname: esx-hx-datacenter-cluster3-3
+        server_hxdp_mgmt_ip: 10.0.3.3
+        server_hypervisor_mgmt_ip: 10.0.3.13
+        node_role: Storage
+        attached_to_hx_cluster: hx-datacenter-cluster3
